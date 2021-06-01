@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            margin: 0;
+            padding:0;
+        }
+        #rice, #curry, #curry-rice{
+            height: 250px;
+            background-color: antiquewhite;
+            margin: 5px;
+        }
+
+    </style>
+</head>
+<body>
+    <header>
+        <h1>async / await を使ったカレー作り</h1>
+        <button id="start-btn" width="200px" heigh="100px">START</button>
+        <p>タイム：<span id="time-text"></span></p>
+    </header>
+    <main>
+        <div id="rice">
+            <p>①まずはご飯を10秒レンジでチンします</p>
+        </div>
+        <div id="curry">
+            <p>②その間にカレーを5秒温めます</p>
+        </div>
+        <div id="curry-rice">
+            <p>③ご飯とカレーを温め終わるとカレーライスが完成します</p>
+        </div>
+    </main>
+    <script>
+        const riceField = document.getElementById("rice")
+        const curryField = document.getElementById("curry")
+        const curryRiceField = document.getElementById("curry-rice")
+        const startBtn = document.getElementById("start-btn")
+        let timeText = document.getElementById("time-text")
+
+        let time = 0 ;
+        timeText.innerHTML = 0
+
+        let isRice = false
+        let isCurry = false
+
+        startBtn.addEventListener("click",()=>{
+
+            async function finish(){
+                await cooking()
+            }
+            finish()
+       
+
+            const countUp = () => {
+                time++
+                timeText.innerHTML = time
+                const countUpTimer = setTimeout(countUp,1000)
+                if(time === 20){
+                    clearTimeout(countUpTimer)
+                }
+            }
+            countUp()
+        })
+
+        function cooking(){
+            return new Promise((resolve)=>{
+                console.log("ご飯のレンチンを開始しました")
+                setTimeout(makeRice,10000)
+                console.log("カレーのレンチンを開始しました")
+                setTimeout(makeCurry,5000)
+            }).then(()=>{
+                console.log("cooking終わり")
+            })
+        }
+
+
+
+        function makeRice(){
+            const riceImg = document.createElement("img")
+            riceImg.src = "./img/rice.png"
+            riceField.appendChild(riceImg)
+            let isRice = true
+            console.log(isRice)
+            makeCurryRice()
+
+        }
+        function makeCurry(){
+            const curryImg = document.createElement("img")
+            curryImg.src = "./img/curry.png"
+            curryField.appendChild(curryImg)
+            let isCurry = true
+            console.log(isCurry)
+        }
+        function makeCurryRice(){
+            const curryRiceImg = document.createElement("img")
+            curryRiceImg.src = "./img/curry-rice.png"
+            curryRiceField.appendChild(curryRiceImg)
+        }
+
+    
+
+
+
+    </script>
+</body>
+</html>
